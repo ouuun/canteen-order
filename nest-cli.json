@@ -1,4 +1,48 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "apps/canteen-order/src",
+  "monorepo": true,
+  "root": "apps/canteen-order",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/canteen-order/tsconfig.app.json"
+  },
+  "projects": {
+    "canteen-order": {
+      "type": "application",
+      "root": "apps/canteen-order",
+      "entryFile": "main",
+      "sourceRoot": "apps/canteen-order/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/canteen-order/tsconfig.app.json"
+      }
+    },
+    "test": {
+      "type": "application",
+      "root": "apps/test",
+      "entryFile": "main",
+      "sourceRoot": "apps/test/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/test/tsconfig.app.json"
+      }
+    },
+    "utils": {
+      "type": "library",
+      "root": "libs/utils",
+      "entryFile": "index",
+      "sourceRoot": "libs/utils/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/utils/tsconfig.lib.json"
+      }
+    },
+    "model": {
+      "type": "library",
+      "root": "libs/model",
+      "entryFile": "index",
+      "sourceRoot": "libs/model/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/model/tsconfig.lib.json"
+      }
+    }
+  }
 }
