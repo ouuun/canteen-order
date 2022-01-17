@@ -1,6 +1,6 @@
 import * as path from 'path';
 const baseLogPath = path.resolve(__dirname, '../../logs'); // 日志要写入哪个目录
-
+//todo: 调整日志输出格式，看能否分模块保存日志
 const log4jsConfig = {
   appenders: {
     console: {

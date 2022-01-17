@@ -7,8 +7,7 @@ import {
 } from '@nestjs/common';
 import { Logger } from '@utils/utils/logger/log4js';
 import { Request, Response } from 'express';
-import { exceptionMessage } from '@utils/utils/filter/exception-message';
-
+// todo: 考虑删除 该拦截器
 @Catch()
 export class HttpExceptionFilter<T> implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {

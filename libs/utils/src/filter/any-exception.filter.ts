@@ -30,6 +30,8 @@ export class AnyExceptionFilter implements ExceptionFilter {
     Response: ${exception} \n  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     `;
     Logger.error(logFormat);
+
+    //todo: 全局异常处理  返回值调整
     response.status(status).json({
       statusCode: status,
       msg: `${exception}`,

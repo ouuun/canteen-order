@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   getHello(@Query() query: any): string {
-    assert(0 === 1, 'err test');
+    assert('err test');
     // throw new Error('test');
     return '123';
   }
