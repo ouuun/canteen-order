@@ -4,9 +4,10 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
-import { Logger } from '@utils/utils/logger/log4js';
 import { exceptionMessage } from '@utils/utils/filter/exception-message';
+//import { Logger } from '@utils/utils/logger/logger.service';
 
 @Catch()
 export class AnyExceptionFilter implements ExceptionFilter {
@@ -29,7 +30,15 @@ export class AnyExceptionFilter implements ExceptionFilter {
     Status code: ${status}
     Response: ${exception} \n  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     `;
-    Logger.error(logFormat);
+    // Logger.error(
+    //   logFormat,
+    //   exception instanceof Error ? (exception as Error).stack : null,
+    // );
+    Logger.error(
+      logFormat,
+      exception instanceof Error ? (exception as Error).stack : null,
+      'AllExceptionsFilter',
+    );
 
     //todo: 全局异常处理  返回值调整
     response.status(status).json({

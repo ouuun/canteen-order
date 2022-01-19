@@ -1,6 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { Logger } from '@utils/utils/logger/log4js';
+import { Logger } from '@utils/utils/logger/logger.service';
+
 //todo 调整为在 module 中使用
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
@@ -23,10 +24,25 @@ export class LoggerMiddleware implements NestMiddleware {
 
 // 函数式中间件
 export function logger(req: Request, res: Response, next: () => any) {
+  const oldWrite = res.write;
+  const oldEnd = res.end;
+  const chunks = [];
+
+  res.write = (chunk: any) => {
+    chunks.push(Buffer.from(chunk));
+    return oldWrite.apply(res, [chunk]);
+  };
+
+  res.end = (chunk) => {
+    if (chunk) chunks.push(Buffer.from(chunk));
+    const body = Buffer.concat(chunks).toString('utf8');
+    return oldEnd.apply(res, [chunk]);
+  };
+
   const code = res.statusCode; // 响应状态码
   next();
   // 组装日志信息
-  const logFormat = ` >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  const logFormat = `\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     Request original url: ${req.originalUrl}
     Method: ${req.method}
     IP: ${req.ip}
@@ -35,8 +51,7 @@ export function logger(req: Request, res: Response, next: () => any) {
     Query: ${JSON.stringify(req.query)}
     Body: ${JSON.stringify(
       req.body,
-    )} \n  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  `;
+    )} \n  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>`;
   // 根据状态码，进行日志类型区分
   if (code >= 500) {
     Logger.error(logFormat);

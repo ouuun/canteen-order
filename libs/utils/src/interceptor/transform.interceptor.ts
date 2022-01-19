@@ -5,15 +5,28 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import { Logger } from '@utils/utils/logger/log4js';
+import { Logger } from '@utils/utils/logger/logger.service';
+
 // 拦截器 返回值 日志
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const req = context.getArgByIndex(1).req;
     return next.handle().pipe(
       map((data) => {
-        const logFormat = `  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        this.log(context, data);
+        return {
+          code: 200,
+          data: Array.isArray(data) ? { list: data } : { info: data },
+          message: '请求成功',
+        };
+        // return data;
+      }),
+    );
+  }
+
+  private log(context: ExecutionContext, data: any): void {
+    const req = context.getArgByIndex(1).req;
+    const logFormat = `  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     Request original url: ${req.originalUrl}
     Method: ${req.method}
     IP: ${req.ip}
@@ -21,10 +34,7 @@ export class TransformInterceptor implements NestInterceptor {
     Response data:${JSON.stringify(
       data.data,
     )}  \n  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<`;
-        Logger.info(logFormat);
-        Logger.access(logFormat);
-        return data;
-      }),
-    );
+    Logger.info(logFormat);
+    Logger.access(logFormat);
   }
 }
