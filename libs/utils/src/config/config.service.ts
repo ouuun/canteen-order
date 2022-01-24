@@ -12,6 +12,7 @@ import * as configs from '/var/config/canteen-order.json';
 @Injectable()
 export class ConfigService {
   public env = '';
+  public host = '';
   public portCanteenOrder: number;
 
   constructor(private readonly logger: LoggerTsService) {
@@ -20,9 +21,14 @@ export class ConfigService {
   }
 
   loadConfigs(): void {
+    /* env */
     this.env = process.env.NODE_ENV || 'local';
     const env = configs.envs.find((x: any) => x.name === this.env);
     assert(env, `no env ${this.env} in config file`);
+    /* port */
     this.portCanteenOrder = Number(env.port_canteenOrder);
+
+    /* setting */
+    this.host = env.host;
   }
 }

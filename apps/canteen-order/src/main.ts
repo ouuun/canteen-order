@@ -25,7 +25,10 @@ async function bootstrap() {
   const config = app.get(ConfigService);
   await app.listen(config.portCanteenOrder);
   logger.log(
-    chalk.red(`canteen-order模块启动,监听 ${config.portCanteenOrder} 端口`),
+    chalk.red(`canteen-order模块启动 `) +
+      chalk.blue.underline(
+        `${config.host}:${config.portCanteenOrder}/canteen-order`,
+      ),
     'canteen-order',
   );
 }
