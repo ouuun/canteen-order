@@ -1,64 +1,70 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { Logger } from '@utils/utils/logger/logger.service';
+import { ConsoleLogger, Injectable, NestMiddleware } from '@nestjs/common';
+import { NextFunction, Request, Response } from 'express';
+import { LoggerTsService } from '@utils/utils/logger/logger-ts.service';
 
 //todo 调整为在 module 中使用
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  use(req: Request, res: Response, next: () => void) {
-    const code = res.statusCode; // 响应状态码
-    next();
-    // 组装日志信息
-    const logFormat = `Method: ${req.method} \n Request original url: ${req.originalUrl} \n IP: ${req.ip} \n Status code: ${code} \n`;
-    // 根据状态码，进行日志类型区分
-    if (code >= 500) {
-      Logger.error(logFormat);
-    } else if (code >= 400) {
-      Logger.warn(logFormat);
-    } else {
-      Logger.access(logFormat);
-      Logger.log(logFormat);
-    }
+  constructor(private readonly logger: LoggerTsService) {
+    //
   }
-}
 
-// 函数式中间件
-export function logger(req: Request, res: Response, next: () => any) {
-  const oldWrite = res.write;
-  const oldEnd = res.end;
-  const chunks = [];
+  use(req: Request, res: Response, next: NextFunction) {
+    this.logging(req, res, this.logger);
+    next();
+  }
 
-  res.write = (chunk: any) => {
-    chunks.push(Buffer.from(chunk));
-    return oldWrite.apply(res, [chunk]);
-  };
+  private logging(req: Request, res: Response, logger: ConsoleLogger): void {
+    const start = Date.now();
+    const oldWrite = res.write;
+    const oldEnd = res.end;
+    const chunks = [];
 
-  res.end = (chunk) => {
-    if (chunk) chunks.push(Buffer.from(chunk));
-    const body = Buffer.concat(chunks).toString('utf8');
-    return oldEnd.apply(res, [chunk]);
-  };
+    res.write = (chunk: any) => {
+      chunks.push(Buffer.from(chunk));
+      return oldWrite.apply(res, [chunk]);
+    };
 
-  const code = res.statusCode; // 响应状态码
-  next();
-  // 组装日志信息
-  const logFormat = `\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    Request original url: ${req.originalUrl}
-    Method: ${req.method}
-    IP: ${req.ip}
-    Status code: ${code}
-    Parmas: ${JSON.stringify(req.params)}
-    Query: ${JSON.stringify(req.query)}
-    Body: ${JSON.stringify(
-      req.body,
-    )} \n  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>`;
-  // 根据状态码，进行日志类型区分
-  if (code >= 500) {
-    Logger.error(logFormat);
-  } else if (code >= 400) {
-    Logger.warn(logFormat);
-  } else {
-    Logger.access(logFormat);
-    Logger.log(logFormat);
+    res.end = (chunk) => {
+      if (chunk) chunks.push(Buffer.from(chunk));
+
+      let body = Buffer.concat(chunks).toString('utf8');
+      const { method, originalUrl } = req;
+      const { statusCode } = res;
+      const elapsed = Date.now() - start;
+      const user: any = req['user'];
+      let contentLength = res.get('content-length') || 0;
+
+      if (
+        req.originalUrl === '/api/jinkeh/wxmp/qrcode/get' &&
+        body.length > 4096
+      ) {
+        contentLength = Buffer.from(body).length;
+        body = '<image buffer>';
+      }
+
+      let ip = req.ip;
+      if (req.headers['x-forwarded-for']) {
+        const forwarded = req.headers['x-forwarded-for'].toString().split(',');
+        if (forwarded[0]) ip = forwarded[0];
+      }
+
+      let text = `${method} ${originalUrl} ${statusCode} ${elapsed}ms ${contentLength}b`;
+      text += ` - ${user?.id || 'NA'} ${ip}`;
+      text += ['POST', 'PUT'].includes(method)
+        ? ` - ${JSON.stringify(req.body)}`
+        : ' - NA';
+      text += ` - ${this.outText(method, body)}`;
+
+      logger.log(text);
+
+      return oldEnd.apply(res, [chunk]);
+    };
+  }
+
+  private outText(method: string, object: any, outLength = 100): string {
+    const text = typeof object === 'string' ? object : JSON.stringify(object);
+    if (method !== 'GET' || text.length <= outLength) return text;
+    return `${text.substr(0, outLength)}...(${text.length})`;
   }
 }

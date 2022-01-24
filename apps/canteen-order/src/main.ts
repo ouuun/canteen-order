@@ -1,17 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as express from 'express';
-import { TransformInterceptor } from '@utils/utils/interceptor/transform.interceptor';
-import { logger } from '@utils/utils/middleware/logger.middleware';
-import { Logger } from '@utils/utils/logger/logger.service';
+import { LoggerTsService } from '@utils/utils/logger/logger-ts.service';
+import { json, urlencoded } from 'express';
+import rateLimit from 'express-rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(express.json()); // For parsing application/json
-  app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
-  app.use(logger);
-  app.useGlobalInterceptors(new TransformInterceptor());
-  Logger.initLogger('user');
+
+  const logger = app.get(LoggerTsService);
+  app.useLogger(logger);
+
+  app.enableCors();
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+    }),
+    json({ limit: '1mb' }),
+    urlencoded({ extended: true, limit: '1mb' }),
+  );
   await app.listen(3000);
 }
 bootstrap();

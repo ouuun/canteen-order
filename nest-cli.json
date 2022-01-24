@@ -4,7 +4,7 @@
   "monorepo": true,
   "root": "apps/canteen-order",
   "compilerOptions": {
-    "webpack": true,
+    "webpack": false,
     "tsConfigPath": "apps/canteen-order/tsconfig.app.json"
   },
   "projects": {
