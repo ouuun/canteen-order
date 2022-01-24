@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { LoggerTsService } from '@utils/utils/logger/logger-ts.service';
 import { json, urlencoded } from 'express';
 import rateLimit from 'express-rate-limit';
+import * as chalk from 'chalk';
+import { ConfigService } from '@utils/utils/config/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +21,12 @@ async function bootstrap() {
     json({ limit: '1mb' }),
     urlencoded({ extended: true, limit: '1mb' }),
   );
-  await app.listen(3000);
+
+  const config = app.get(ConfigService);
+  await app.listen(config.portCanteenOrder);
+  logger.log(
+    chalk.red(`canteen-order模块启动,监听 ${config.portCanteenOrder} 端口`),
+    'canteen-order',
+  );
 }
 bootstrap();
