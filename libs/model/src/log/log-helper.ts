@@ -42,6 +42,8 @@ export class LogHelper {
   }
 
   static buildLog(instance: Model, req: LogRequest): Log {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const log = Log.build(req);
     log.entity = (instance as any).getModalType().tableName;
     log.entityId = instance.id;
