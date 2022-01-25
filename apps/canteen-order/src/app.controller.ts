@@ -3,8 +3,8 @@ import { AppService } from './app.service';
 import { User } from '@model/model/user/user.model';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { LOG_ACTION } from '@model/model/log/log.interface';
-import { LogHelper } from '@model/model/log/log-helper';
+import { LOG_ACTION } from '@model/model/log/log/log.interface';
+import { LogHelper } from '@model/model/log/log/log-helper';
 
 @Controller('test')
 export class AppController {

@@ -9,10 +9,10 @@ import {
   Silent,
   Transactionable,
 } from 'sequelize/types/lib/model';
-import { Sequence } from '@model/model/sequence/sequence.model';
-import { SEQUENCE_NAME } from '@model/model/sequence/sequence.interface';
-import { Log } from '@model/model/log/log.model';
-import { LOG_ACTION } from '@model/model/log/log.interface';
+import { Sequence } from '@model/model/log/sequence/sequence.model';
+import { SEQUENCE_NAME } from '@model/model/log/sequence/sequence.interface';
+import { Log } from '@model/model/log/log/log.model';
+import { LOG_ACTION } from '@model/model/log/log/log.interface';
 
 export class LogHelper {
   static async buildOptions(

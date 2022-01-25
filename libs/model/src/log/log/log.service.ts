@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Sequence } from '@model/model/sequence/sequence.model';
-import { SEQUENCE_NAME } from '@model/model/sequence/sequence.interface';
+import { Sequence } from '@model/model/log/sequence/sequence.model';
+import { SEQUENCE_NAME } from '@model/model/log/sequence/sequence.interface';
 
 @Injectable()
 export class LogService {

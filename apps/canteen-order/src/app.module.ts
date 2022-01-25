@@ -7,7 +7,7 @@ import { UtilsModule } from '@utils/utils';
 import { TransformInterceptor } from '@utils/utils/interceptor/transform.interceptor';
 import { LogInterceptor } from '@utils/utils/interceptor/log.interceptor';
 import { UserModule } from '@model/model/user/user.module';
-import { LogModule } from '@model/model/log/log.module';
+import { LogModule } from '@model/model/log/log/log.module';
 
 @Module({
   imports: [UtilsModule, UserModule, LogModule],

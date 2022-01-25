@@ -9,7 +9,7 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { LogHelper } from '@model/model/log/log-helper';
+import { LogHelper } from '@model/model/log/log/log-helper';
 
 @Table({ tableName: 'user', timestamps: false })
 export class User extends Model {

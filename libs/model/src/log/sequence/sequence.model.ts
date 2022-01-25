@@ -6,7 +6,7 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { SEQUENCE_NAME } from '@model/model/sequence/sequence.interface';
+import { SEQUENCE_NAME } from '@model/model/log/sequence/sequence.interface';
 
 @Table({ tableName: 'sequences', timestamps: true, paranoid: true })
 export class Sequence extends Model {
