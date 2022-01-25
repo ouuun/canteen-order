@@ -6,9 +6,11 @@ import { AllExceptionFilter } from '@utils/utils/filter/all-exception.filter';
 import { UtilsModule } from '@utils/utils';
 import { TransformInterceptor } from '@utils/utils/interceptor/transform.interceptor';
 import { LogInterceptor } from '@utils/utils/interceptor/log.interceptor';
+import { UserModule } from '@model/model/user/user.module';
+import { LogModule } from '@model/model/log/log.module';
 
 @Module({
-  imports: [UtilsModule],
+  imports: [UtilsModule, UserModule, LogModule],
   controllers: [AppController],
   providers: [
     {
