@@ -4,7 +4,6 @@ import { IS_PUBLIC_KEY } from './public.metadata';
 import { LoggerTsService } from '@utils/utils/logger/logger-ts.service';
 import { AuthService } from '@utils/utils/auth/auth.service';
 
-
 @Injectable()
 export class MyAuthGuard implements CanActivate {
   constructor(
@@ -29,7 +28,7 @@ export class MyAuthGuard implements CanActivate {
 
   private async verifyToken(request: any) {
     const token = request.headers.authorization.replace('Bearer ', '');
-    const info = await this.authService.verify(token);
-    request.user = info;
+    //verify 校验成功:返回payload,校验失败:抛出对应错误
+    request.user = await this.authService.verify(token);
   }
 }
