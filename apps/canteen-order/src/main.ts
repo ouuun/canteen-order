@@ -24,6 +24,9 @@ async function bootstrap() {
 
   const config = app.get(ConfigService);
   await app.listen(config.portCanteenOrder);
+
+  console.log(await app.getUrl());
+
   logger.log(
     chalk.red(`canteen-order模块启动 `) +
       chalk.blue.underline(

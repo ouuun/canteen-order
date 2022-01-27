@@ -3,6 +3,7 @@ import { UtilsModule } from '@utils/utils';
 import { User } from '@model/model/user/user.model';
 import { mySequelizeModule } from '@model/model/sequelize.module';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { UserService } from '@model/model/user/user.service';
 
 @Module({
   imports: [
@@ -10,8 +11,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
     mySequelizeModule,
     SequelizeModule.forFeature([User], 'connection'),
   ],
-  providers: [],
-  exports: [],
+  providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {
   //

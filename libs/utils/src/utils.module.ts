@@ -4,7 +4,7 @@ import { ConfigModule } from '@utils/utils/config/config.module';
 
 @Module({
   imports: [ConfigModule],
-  providers: [LoggerTsService],
-  exports: [LoggerTsService],
+  providers: [LoggerTsService, ConfigModule],
+  exports: [LoggerTsService, ConfigModule],
 })
 export class UtilsModule {}

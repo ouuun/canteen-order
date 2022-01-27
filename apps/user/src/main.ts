@@ -1,15 +1,35 @@
 import { NestFactory } from '@nestjs/core';
+import { LoggerTsService } from '@utils/utils/logger/logger-ts.service';
+import { json, urlencoded } from 'express';
+import rateLimit from 'express-rate-limit';
+import * as chalk from 'chalk';
+import { ConfigService } from '@utils/utils/config/config.service';
 import { UserModule } from './user.module';
-import { logger } from '@utils/utils/middleware/logger.middleware';
-import * as express from 'express';
-import { TransformInterceptor } from '@utils/utils/interceptor/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(UserModule);
-  app.use(express.json()); // For parsing application/json
-  app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
-  app.use(logger);
-  app.useGlobalInterceptors(new TransformInterceptor());
-  await app.listen(3000);
+
+  const logger = app.get(LoggerTsService);
+  app.useLogger(logger);
+
+  app.enableCors();
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+    }),
+    json({ limit: '1mb' }),
+    urlencoded({ extended: true, limit: '1mb' }),
+  );
+
+  const config = app.get(ConfigService);
+  await app.listen(config.portUser);
+
+  console.log(await app.getUrl());
+  logger.log(
+    chalk.red(`user模块启动 `) +
+      chalk.blue.underline(`${config.host}:${config.portUser}/user`),
+    'user',
+  );
 }
 bootstrap();
