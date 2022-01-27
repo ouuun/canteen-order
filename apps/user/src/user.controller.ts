@@ -22,7 +22,11 @@ export class UserController {
 
   @Get('login')
   async test(@Req() req: Request): Promise<any> {
-    console.log(req.user);
+    // console.log(req);
+    console.log(req.headers.authorization);
+    const a = await this.authService.verify(
+      req.headers.authorization.replace('Bearer ', ''),
+    );
     return req.user;
   }
 }
