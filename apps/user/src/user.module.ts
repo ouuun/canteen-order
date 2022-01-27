@@ -9,6 +9,7 @@ import { LogInterceptor } from '@utils/utils/interceptor/log.interceptor';
 import { UserModule as userModelModule } from '@model/model/user/user.module';
 import { AuthModule } from '@utils/utils/auth/auth.module';
 import { JwtAuthGuard } from '@utils/utils/auth/jwt-auth.guard';
+import { MyAuthGuard } from '@utils/utils/auth/my-auth.guard';
 
 @Module({
   imports: [AuthModule, UtilsModule, userModelModule],
@@ -28,7 +29,7 @@ import { JwtAuthGuard } from '@utils/utils/auth/jwt-auth.guard';
     },
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: MyAuthGuard,
     },
     UserService,
   ],
