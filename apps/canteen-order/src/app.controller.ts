@@ -1,6 +1,6 @@
 import { Controller, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
-import { User } from '@model/model/user/user.model';
+import { User } from '@model/model/user/user/user.model';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { LOG_ACTION } from '@model/model/log/log/log.interface';

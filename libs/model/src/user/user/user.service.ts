@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { User } from '@model/model/user/user.model';
+import { User } from '@model/model/user/user/user.model';
 
 @Injectable()
 export class UserService {
