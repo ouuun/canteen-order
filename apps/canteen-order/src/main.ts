@@ -5,7 +5,6 @@ import * as chalk from 'chalk';
 import { ConfigService } from '@utils/utils/config/config.service';
 import rateLimit from 'express-rate-limit';
 import { json, urlencoded } from 'express';
-import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +18,7 @@ async function bootstrap() {
       windowMs: 15 * 60 * 1000, // 15 minutes
       max: 100, // limit each IP to 100 requests per windowMs
     }),
-    helmet(),
+    // helmet(),
     json({ limit: '1mb' }),
     urlencoded({ extended: true, limit: '1mb' }),
   );
