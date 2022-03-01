@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { LoggerTsService } from '@utils/utils/logger/logger-ts.service';
 import { json, urlencoded } from 'express';
-import rateLimit from 'express-rate-limit';
+import { rateLimit } from 'express-rate-limit';
 import * as chalk from 'chalk';
 import { ConfigService } from '@utils/utils/config/config.service';
 
