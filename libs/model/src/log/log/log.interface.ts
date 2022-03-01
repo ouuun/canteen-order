@@ -1,4 +1,4 @@
-import { Transaction } from 'sequelize/types/lib/transaction';
+import { Transaction } from 'sequelize';
 
 export enum LOG_ACTION {
   add = 'add',
