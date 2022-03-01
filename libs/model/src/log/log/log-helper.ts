@@ -1,14 +1,5 @@
-import { Transaction } from 'sequelize';
+import { BuildOptions, DestroyOptions, Hookable, Logging, Paranoid, Silent, Transaction, Transactionable } from 'sequelize';
 import { Model } from 'sequelize-typescript';
-import {
-  BuildOptions,
-  DestroyOptions,
-  Hookable,
-  Logging,
-  Paranoid,
-  Silent,
-  Transactionable,
-} from 'sequelize/types/lib/model';
 import { Sequence } from '@model/model/log/sequence/sequence.model';
 import { SEQUENCE_NAME } from '@model/model/log/sequence/sequence.interface';
 import { Log } from '@model/model/log/log/log.model';
