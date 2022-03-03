@@ -8,6 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "build:user": "nest build user",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -21,6 +22,7 @@
     "test:e2e": "jest --config ./apps/canteen-order/test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/axios": "0.0.6",
     "@nestjs/common": "^8.3.1",
     "@nestjs/core": "^8.3.1",
     "@nestjs/jwt": "^8.0.0",

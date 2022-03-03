@@ -19,6 +19,12 @@ export class User extends Model {
   @Column
   password: string;
 
+  @Column
+  openid: string;
+
+  @Column
+  image: string;
+
   @BeforeUpdate
   @BeforeCreate
   static beforeSaving(instance: User, options: any) {

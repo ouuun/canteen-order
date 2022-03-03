@@ -1,27 +1,28 @@
-import { Controller, Get } from '@nestjs/common';
-import { Req } from '@nestjs/common';
-import { UserService } from './user.service';
-import { AuthService } from '@utils/utils/auth/auth.service';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
+import { UserService } from '@model/model/user/user/user.service';
 import { Public } from '@utils/utils/auth/public.metadata';
-import { User } from '@model/model/user/user/user.model';
-import { Request } from 'express';
 
+@Controller('api/user')
 @Controller()
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly authService: AuthService,
-  ) {}
-
-  @Get()
-  @Public()
-  async getHello(): Promise<string> {
-    const user = await User.findOne({ where: { id: 1 } });
-    return await this.authService.login(user);
-  }
+  constructor(private readonly userService: UserService) {}
 
   @Get('login')
-  async test(@Req() req: Request): Promise<any> {
-    return req.user;
+  @Public()
+  async test(@Query() query: any): Promise<any> {
+    const code = query.code;
+    return this.userService.login(code);
+  }
+
+  @Post('register')
+  @Public()
+  async register(@Body() body: any): Promise<any> {
+    return await this.userService.regist(body);
+  }
+
+  @Get('info')
+  async getUserInfo(@Req() req: any): Promise<any> {
+    const user = req.user;
+    return await this.userService.find(user.id);
   }
 }

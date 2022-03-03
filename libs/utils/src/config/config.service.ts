@@ -25,7 +25,7 @@ export class ConfigService {
 
   constructor(private readonly logger: LoggerTsService) {
     if (!this.env) this.loadConfigs();
-    this.logger.log('ConfigService initialized', 'ConfigService');
+    this.logger.log('WechatService initialized', 'ConfigService');
   }
 
   loadConfigs(): void {

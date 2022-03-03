@@ -27,8 +27,10 @@ export class MyAuthGuard implements CanActivate {
   }
 
   private async verifyToken(request: any) {
-    const token = request.headers.authorization.replace('Bearer ', '');
-    //verify 校验成功:返回payload,校验失败:抛出对应错误
-    request.user = await this.authService.verify(token);
+    if (request.headers.authorization !== undefined) {
+      const token = request.headers.authorization.replace('Bearer ', '');
+      //verify 校验成功:返回payload,校验失败:抛出对应错误
+      request.user = await this.authService.verify(token);
+    }
   }
 }
