@@ -11,43 +11,37 @@ import {
 } from 'sequelize-typescript';
 import { LogHelper } from '@model/model/log/log/log-helper';
 
-@Table({ tableName: 'user', timestamps: true })
-export class User extends Model {
+@Table({ tableName: 'type', timestamps: true })
+export class Type extends Model {
   @Column
   name: string;
 
   @Column
-  password: string;
-
-  @Column
-  openid: string;
-
-  @Column
-  image: string;
+  sort: number;
 
   @BeforeUpdate
   @BeforeCreate
-  static beforeSaving(instance: User, options: any) {
+  static beforeSaving(instance: Type, options: any) {
     LogHelper.beforeSave(instance, options);
   }
 
   @AfterUpdate
   @AfterCreate
-  static async afterSaving(instance: User, options: any) {
+  static async afterSaving(instance: Type, options: any) {
     await LogHelper.afterSave(instance, options);
   }
 
   @BeforeDestroy
-  static beforeDeleting(instance: User, options: any) {
+  static beforeDeleting(instance: Type, options: any) {
     return LogHelper.beforeDestroy(instance, options);
   }
 
   @AfterDestroy
-  static async afterDeleting(instance: User, options: any) {
+  static async afterDeleting(instance: Type, options: any) {
     await LogHelper.afterDestroy(instance, options);
   }
 
-  getModalType(): typeof User {
-    return User;
+  getModalType(): typeof Type {
+    return Type;
   }
 }

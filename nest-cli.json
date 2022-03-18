@@ -1,20 +1,20 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/canteen-order/src",
+  "sourceRoot": "apps/manager/src",
   "monorepo": true,
-  "root": "apps/canteen-order",
+  "root": "apps/manager",
   "compilerOptions": {
     "webpack": false,
-    "tsConfigPath": "apps/canteen-order/tsconfig.app.json"
+    "tsConfigPath": "apps/manager/tsconfig.app.json"
   },
   "projects": {
-    "canteen-order": {
+    "manager": {
       "type": "application",
-      "root": "apps/canteen-order",
+      "root": "apps/manager",
       "entryFile": "main",
-      "sourceRoot": "apps/canteen-order/src",
+      "sourceRoot": "apps/manager/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/canteen-order/tsconfig.app.json"
+        "tsConfigPath": "apps/manager/tsconfig.app.json"
       }
     },
     "utils": {

@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ManagerModule } from './manager.module';
 import { LoggerTsService } from '@utils/utils/logger/logger-ts.service';
 import * as chalk from 'chalk';
 import { ConfigService } from '@utils/utils/config/config.service';
@@ -8,7 +8,7 @@ import { json, urlencoded } from 'express';
 import helmet from 'helmet';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(ManagerModule);
 
   const logger = app.get(LoggerTsService);
   app.useLogger(logger);
@@ -30,11 +30,9 @@ async function bootstrap() {
   console.log(await app.getUrl());
 
   logger.log(
-    chalk.red(`canteen-order模块启动 `) +
-      chalk.blue.underline(
-        `${config.host}:${config.portCanteenOrder}/canteen-order`,
-      ),
-    'canteen-order',
+    chalk.red(`manager模块启动 `) +
+      chalk.blue.underline(`${config.host}:${config.portCanteenOrder}/manager`),
+    'manager',
   );
 }
 bootstrap();
