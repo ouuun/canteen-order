@@ -25,13 +25,13 @@ async function bootstrap() {
   );
 
   const config = app.get(ConfigService);
-  await app.listen(config.portCanteenOrder);
+  await app.listen(config.portManager);
 
   console.log(await app.getUrl());
 
   logger.log(
     chalk.red(`manager模块启动 `) +
-      chalk.blue.underline(`${config.host}:${config.portCanteenOrder}/manager`),
+      chalk.blue.underline(`${config.host}:${config.portManager}/manager`),
     'manager',
   );
 }

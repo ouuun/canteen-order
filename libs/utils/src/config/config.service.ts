@@ -16,7 +16,7 @@ export class ConfigService {
   public env: string;
   public host: string;
   /*port*/
-  public portCanteenOrder: number;
+  public portManager: number;
   public portUser: number;
   /*database*/
   public db: Database;
@@ -34,7 +34,7 @@ export class ConfigService {
     const env = configs.envs.find((x: any) => x.name === this.env);
     assert(env, `no env ${this.env} in config file`);
     /* port */
-    this.portCanteenOrder = Number(env.port_canteenOrder);
+    this.portManager = Number(env.port_manager);
     this.portUser = Number(env.port_user);
     /* setting */
     this.host = env.host;
