@@ -9,7 +9,7 @@ export class UserController {
 
   @Get('login')
   @Public()
-  async test(@Query() query: any): Promise<any> {
+  async login(@Query() query: any): Promise<any> {
     const code = query.code;
     return this.userService.login(code);
   }
@@ -24,5 +24,10 @@ export class UserController {
   async getUserInfo(@Req() req: any): Promise<any> {
     const user = req.user;
     return await this.userService.find(user.id);
+  }
+
+  @Get('test')
+  async test(): Promise<any> {
+    return { a: 666 };
   }
 }

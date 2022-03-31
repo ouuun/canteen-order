@@ -6,6 +6,7 @@ import { LogHelper } from '@model/model/log/log/log-helper';
 import { LOG_ACTION } from '@model/model/log/log/log.interface';
 import { UpdateEntity } from '@model/model/model-utils';
 import { Op } from 'sequelize';
+import * as assert from 'assert';
 
 @Injectable()
 export class TypeService {
@@ -19,6 +20,7 @@ export class TypeService {
 
   public async addType(req: any): Promise<Type> {
     const type = await Type.build(req);
+    await this.checkRepeat(type);
     await this.sequelize.transaction(async (t) => {
       const options = await LogHelper.buildOptions(req.operId, t);
       options.log.request.action = LOG_ACTION.add;
@@ -42,6 +44,9 @@ export class TypeService {
   public async updateType(req: any): Promise<Type> {
     const type = await Type.findOne({ where: { id: req.id } });
     UpdateEntity(type, req);
+
+    await this.checkRepeat(type);
+
     await this.sequelize.transaction(async (t) => {
       const options = await LogHelper.buildOptions(req.operId, t);
       options.log.request.action = LOG_ACTION.update;
@@ -73,5 +78,11 @@ export class TypeService {
       await Promise.all(promise);
     });
     return types;
+  }
+
+  private async checkRepeat(type: any) {
+    const types = await Type.findAll();
+    const check = types.find((t) => t.name == type.name);
+    assert(check === undefined, '类型重复,操作失败!');
   }
 }

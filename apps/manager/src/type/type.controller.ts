@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { Public } from '@utils/utils/auth/public.metadata';
 import { TypeService } from '@model/model/type/type/type.service';
 import { Type } from '@model/model/type/type/type.model';
+import * as assert from 'assert';
 
 @Controller('api/manager/type')
 export class TypeController {
