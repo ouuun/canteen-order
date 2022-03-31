@@ -25,9 +25,4 @@ export class UserController {
     const user = req.user;
     return await this.userService.find(user.id);
   }
-
-  @Get('test')
-  async test(): Promise<any> {
-    return { a: 666 };
-  }
 }
