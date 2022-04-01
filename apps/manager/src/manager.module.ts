@@ -7,9 +7,10 @@ import { LogInterceptor } from '@utils/utils/interceptor/log.interceptor';
 import { TypeModule } from './type/type.module';
 import { MyAuthGuard } from '@utils/utils/auth/my-auth.guard';
 import { AuthModule } from '@utils/utils/auth/auth.module';
+import { DishModule } from './dish/dish.module';
 
 @Module({
-  imports: [AuthModule, UtilsModule, TypeModule],
+  imports: [AuthModule, UtilsModule, TypeModule, DishModule],
   controllers: [],
   providers: [
     {
