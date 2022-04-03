@@ -23,6 +23,9 @@ export class Dish extends Model {
   @Column({ type: DataType.STRING(31) })
   name: string;
 
+  @Column({ type: DataType.BOOLEAN })
+  active: boolean;
+
   @Column({ type: DataType.INTEGER })
   type: number;
 
