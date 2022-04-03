@@ -50,7 +50,7 @@ export class TypeService {
     await this.sequelize.transaction(async (t) => {
       const options = await LogHelper.buildOptions(req.operId, t);
       options.log.request.action = LOG_ACTION.update;
-      options.log.request.note = '更新类型';
+      options.log.request.note = '修改类型';
       await type.save(options);
     });
     return type;

@@ -10,8 +10,8 @@ export interface DishTaste {
   sale: number;
 }
 
-export enum DishAddCheck {
-  name = '菜品名不可为空',
+export enum DishCheck {
+  name = '未设置菜品名',
   type = '菜品类型选择错误',
   mainImages = '未设置主图',
   detailImages = '未设置详情图',

@@ -42,4 +42,12 @@ export class DishController {
   async get(@Query() query: any, @Req() request: any): Promise<Dish> {
     return await this.dishService.getDish(query);
   }
+
+  @Post('update')
+  async update(@Body() body: any, @Req() request: any): Promise<Dish> {
+    const user = request.user;
+    return await this.dishService.updateDish(
+      Object.assign({}, body, { operId: user.id }),
+    );
+  }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import {
-  DishAddCheck,
+  DishCheck,
   DishPrice,
   DishTaste,
 } from '@model/model/cuisine/dish/dish/dish.interface';
@@ -11,6 +11,7 @@ import * as assert from 'assert';
 import { Type } from '@model/model/cuisine/type/type/type.model';
 import { LogHelper } from '@model/model/log/log/log-helper';
 import { LOG_ACTION } from '@model/model/log/log/log.interface';
+import { UpdateEntity } from '@model/model/model-utils';
 
 @Injectable()
 export class DishService {
@@ -19,7 +20,7 @@ export class DishService {
   ) {}
 
   public async addDish(req: any): Promise<Dish> {
-    await this.checkAdd(req);
+    await this.checkDish(req);
     const dish = await Dish.build(req);
 
     await this.sequelize.transaction(async (t) => {
@@ -31,20 +32,34 @@ export class DishService {
     return dish;
   }
 
-  private async checkAdd(req: addDishRequest) {
-    assert(req.name, DishAddCheck.name);
+  private async checkDish(req: addDishRequest) {
+    assert(req.name, DishCheck.name);
     const type = await Type.findOne({ where: { id: req.type } });
-    assert(type, DishAddCheck.type);
-    assert(req.mainImages, DishAddCheck.mainImages);
-    assert(req.detailImages, DishAddCheck.detailImages);
-    assert(req.prices, DishAddCheck.prices);
-    assert(req.material, DishAddCheck.material);
-    assert(req.cooking, DishAddCheck.cooking);
-    assert(req.weight, DishAddCheck.weight);
+    assert(type, DishCheck.type);
+    assert(req.mainImages, DishCheck.mainImages);
+    assert(req.detailImages, DishCheck.detailImages);
+    assert(req.prices, DishCheck.prices);
+    assert(req.material, DishCheck.material);
+    assert(req.cooking, DishCheck.cooking);
+    assert(req.weight, DishCheck.weight);
   }
 
   public async getDish(query: any): Promise<Dish> {
     const dish = await Dish.findOne({ where: { id: query.id } });
+    return dish;
+  }
+
+  public async updateDish(req: any): Promise<Dish> {
+    const dish = await Dish.findOne({ where: { id: req.id } });
+    await this.checkDish(req);
+    UpdateEntity(dish, req);
+
+    await this.sequelize.transaction(async (t) => {
+      const options = await LogHelper.buildOptions(req.operId, t);
+      options.log.request.action = LOG_ACTION.update;
+      options.log.request.note = '修改菜品';
+      await dish.save(options);
+    });
     return dish;
   }
 }
