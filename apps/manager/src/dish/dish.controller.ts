@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseInterceptors,
@@ -10,6 +12,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import { DishService } from '@model/model/cuisine/dish/dish/dish.service';
 import { Dish } from '@model/model/cuisine/dish/dish/dish.model';
+import { Public } from '@utils/utils/auth/public.metadata';
 
 @Controller('api/manager/dish')
 export class DishController {
@@ -32,5 +35,11 @@ export class DishController {
     return await this.dishService.addDish(
       Object.assign({}, body, { operId: user.id }),
     );
+  }
+
+  @Get('get')
+  @Public()
+  async get(@Query() query: any, @Req() request: any): Promise<Dish> {
+    return await this.dishService.getDish(query);
   }
 }

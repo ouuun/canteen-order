@@ -42,6 +42,11 @@ export class DishService {
     assert(req.cooking, DishAddCheck.cooking);
     assert(req.weight, DishAddCheck.weight);
   }
+
+  public async getDish(query: any): Promise<Dish> {
+    const dish = await Dish.findOne({ where: { id: query.id } });
+    return dish;
+  }
 }
 
 interface addDishRequest {
