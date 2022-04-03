@@ -50,4 +50,10 @@ export class DishController {
       Object.assign({}, body, { operId: user.id }),
     );
   }
+
+  @Get('getByType')
+  @Public()
+  async getByType(@Query() query: any, @Req() request: any): Promise<Dish[]> {
+    return await this.dishService.getDishByType(query);
+  }
 }

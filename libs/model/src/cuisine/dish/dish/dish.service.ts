@@ -62,6 +62,10 @@ export class DishService {
     });
     return dish;
   }
+
+  async getDishByType(query: any): Promise<Dish[]> {
+    return await Dish.findAll({ where: { type: query.typeId } });
+  }
 }
 
 interface addDishRequest {
