@@ -15,6 +15,12 @@ export class TypeController {
     return await this.typeService.getAll();
   }
 
+  @Get('search/withDish')
+  @Public()
+  async searchWithDish(): Promise<Type[]> {
+    return await this.typeService.getAllWithDish();
+  }
+
   @Post('add')
   async add(@Body() body: any, @Req() request: any): Promise<Type> {
     const user = request.user;

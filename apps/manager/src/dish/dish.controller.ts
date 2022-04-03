@@ -43,17 +43,23 @@ export class DishController {
     return await this.dishService.getDish(query);
   }
 
-  @Post('update')
-  async update(@Body() body: any, @Req() request: any): Promise<Dish> {
-    const user = request.user;
-    return await this.dishService.updateDish(
-      Object.assign({}, body, { operId: user.id }),
-    );
+  @Get('search')
+  @Public()
+  async getAll(@Query() query: any, @Req() request: any): Promise<Dish[]> {
+    return await this.dishService.getDishes(query);
   }
 
   @Get('getByType')
   @Public()
   async getByType(@Query() query: any, @Req() request: any): Promise<Dish[]> {
     return await this.dishService.getDishByType(query);
+  }
+
+  @Post('update')
+  async update(@Body() body: any, @Req() request: any): Promise<Dish> {
+    const user = request.user;
+    return await this.dishService.updateDish(
+      Object.assign({}, body, { operId: user.id }),
+    );
   }
 }

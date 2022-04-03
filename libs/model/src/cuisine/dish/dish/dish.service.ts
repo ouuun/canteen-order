@@ -66,6 +66,10 @@ export class DishService {
   async getDishByType(query: any): Promise<Dish[]> {
     return await Dish.findAll({ where: { type: query.typeId } });
   }
+
+  async getDishes(query: any): Promise<Dish[]> {
+    return await Dish.findAll({ where: { active: query.active } });
+  }
 }
 
 interface addDishRequest {

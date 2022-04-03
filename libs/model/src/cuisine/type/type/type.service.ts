@@ -7,6 +7,7 @@ import { LOG_ACTION } from '@model/model/log/log/log.interface';
 import { UpdateEntity } from '@model/model/model-utils';
 import { Op } from 'sequelize';
 import * as assert from 'assert';
+import { Dish } from '@model/model/cuisine/dish/dish/dish.model';
 
 @Injectable()
 export class TypeService {
@@ -84,5 +85,11 @@ export class TypeService {
     const types = await Type.findAll();
     const check = types.find((t) => t.name == type.name);
     assert(check === undefined, '类型重复,操作失败!');
+  }
+
+  public async getAllWithDish(): Promise<Type[]> {
+    return Type.findAll({
+      include: [{ model: Dish, required: false, where: { active: true } }],
+    });
   }
 }
