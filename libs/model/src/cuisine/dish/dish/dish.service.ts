@@ -68,7 +68,10 @@ export class DishService {
   }
 
   async getDishes(query: any): Promise<Dish[]> {
-    return await Dish.findAll({ where: { active: query.active } });
+    console.log(query);
+    let active = false;
+    if (query.active === 'true') active = true;
+    return await Dish.findAll({ where: { active: active } });
   }
 }
 
