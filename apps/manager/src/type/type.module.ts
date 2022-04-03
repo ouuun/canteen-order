@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeController } from './type.controller';
-import { TypeModule as typeModelModule } from '@model/model/type/type/type.module';
+import { CuisineModule } from '@model/model/cuisine/cuisine.module';
 
 @Module({
-  imports: [typeModelModule],
+  imports: [CuisineModule],
   controllers: [TypeController],
   providers: [],
 })

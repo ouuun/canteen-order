@@ -6,6 +6,7 @@ import {
   BeforeDestroy,
   BeforeUpdate,
   Column,
+  DataType,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -13,16 +14,16 @@ import { LogHelper } from '@model/model/log/log/log-helper';
 
 @Table({ tableName: 'user', timestamps: true })
 export class User extends Model {
-  @Column
+  @Column({ type: DataType.STRING })
   name: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   password: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   openid: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   image: string;
 
   @BeforeUpdate

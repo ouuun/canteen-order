@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { Type } from '@model/model/type/type/type.model';
+import { Type } from '@model/model/cuisine/type/type/type.model';
 import { LogHelper } from '@model/model/log/log/log-helper';
 import { LOG_ACTION } from '@model/model/log/log/log.interface';
 import { UpdateEntity } from '@model/model/model-utils';

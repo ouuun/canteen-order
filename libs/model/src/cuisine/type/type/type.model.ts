@@ -6,18 +6,24 @@ import {
   BeforeDestroy,
   BeforeUpdate,
   Column,
+  DataType,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { LogHelper } from '@model/model/log/log/log-helper';
+import { Dish } from '@model/model/cuisine/dish/dish/dish.model';
 
 @Table({ tableName: 'type', timestamps: true })
 export class Type extends Model {
-  @Column
+  @Column({ type: DataType.STRING })
   name: string;
 
-  @Column
+  @Column({ type: DataType.INTEGER })
   sort: number;
+
+  @HasMany(() => Dish, 'type')
+  Dishes: Dish[];
 
   @BeforeUpdate
   @BeforeCreate
