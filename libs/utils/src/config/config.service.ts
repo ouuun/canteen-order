@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as assert from 'assert';
 import { LoggerTsService } from '@utils/utils/logger/logger-ts.service';
-import { Database, Jwt } from '@utils/utils/config/config.interface';
+import { Database, Jwt, Redis } from '@utils/utils/config/config.interface';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -22,6 +22,8 @@ export class ConfigService {
   public db: Database;
   /*jwt*/
   public jwt: Jwt;
+  /*redis*/
+  public redis: Redis;
 
   constructor(private readonly logger: LoggerTsService) {
     if (!this.env) this.loadConfigs();
@@ -42,5 +44,7 @@ export class ConfigService {
     this.db = connect.database.find((x: any) => x.name === env.db_connect);
     /* jwt */
     this.jwt = connect.jwt.find((x: any) => x.name === env.jwt);
+    /* redis */
+    this.redis = connect.redis.find((x: any) => x.name === env.redis);
   }
 }

@@ -8,9 +8,10 @@ import { TypeModule } from './type/type.module';
 import { MyAuthGuard } from '@utils/utils/auth/my-auth.guard';
 import { AuthModule } from '@utils/utils/auth/auth.module';
 import { DishModule } from './dish/dish.module';
+import { TableModule } from './table/table.module';
 
 @Module({
-  imports: [AuthModule, UtilsModule, TypeModule, DishModule],
+  imports: [AuthModule, UtilsModule, TypeModule, DishModule, TableModule],
   controllers: [],
   providers: [
     {
