@@ -37,6 +37,10 @@ export class OrderService {
       order.Items.push(await this.buildItems(itemRequest));
     }
 
+    order.price = order.Items.reduce((prev, curr) => {
+      return (prev += curr.amount);
+    }, 0);
+
     await this.sequelize.transaction(async (t) => {
       const options = await LogHelper.buildOptions(req.operId, t);
       options.log.request.action = LOG_ACTION.add;
