@@ -158,6 +158,8 @@ export class OrderService {
   public async payOrder(req: any): Promise<Order> {
     const order = await Order.findOne({ where: { id: req.id } });
 
+    assert(order.state == ORDER_STATE.未支付, `该订单 ${order.state}`);
+
     await this.sequelize.transaction(async (t) => {
       const options = await LogHelper.buildOptions(req.operId, t);
       options.log.request.action = LOG_ACTION.cancel;
