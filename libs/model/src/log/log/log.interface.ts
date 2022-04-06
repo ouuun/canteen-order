@@ -5,6 +5,7 @@ export enum LOG_ACTION {
   update = 'update',
   delete = 'delete',
   cancel = 'cancel',
+  pay = 'pay',
 }
 
 export interface LogRequest {

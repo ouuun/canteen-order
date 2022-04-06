@@ -150,4 +150,22 @@ export class OrderService {
       }
     });
   }
+
+  public async getOrder(query: any): Promise<Order> {
+    return await Order.findOne({ where: { id: query.id } });
+  }
+
+  public async payOrder(req: any): Promise<Order> {
+    const order = await Order.findOne({ where: { id: req.id } });
+
+    await this.sequelize.transaction(async (t) => {
+      const options = await LogHelper.buildOptions(req.operId, t);
+      options.log.request.action = LOG_ACTION.cancel;
+      options.log.request.note = '支付订单';
+
+      order.state = ORDER_STATE.已支付;
+      await order.save(options);
+    });
+    return order;
+  }
 }
