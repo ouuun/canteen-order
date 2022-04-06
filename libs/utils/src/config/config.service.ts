@@ -18,6 +18,7 @@ export class ConfigService {
   /*port*/
   public portManager: number;
   public portUser: number;
+  public portOrder: number;
   /*database*/
   public db: Database;
   /*jwt*/
@@ -38,6 +39,7 @@ export class ConfigService {
     /* port */
     this.portManager = Number(env.port_manager);
     this.portUser = Number(env.port_user);
+    this.portOrder = Number(env.port_order);
     /* setting */
     this.host = env.host;
     /* dataBase */
