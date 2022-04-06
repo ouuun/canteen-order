@@ -17,6 +17,10 @@ import { Sequence } from '@model/model/log/sequence/sequence.model';
 import { SEQUENCE_NAME } from '@model/model/log/sequence/sequence.interface';
 import { LOG_ACTION } from '@model/model/log/log/log.interface';
 import { DishService } from '@model/model/cuisine/dish/dish/dish.service';
+import { User } from '@model/model/user/user/user.model';
+import { Role } from '@model/model/role/role/role.model';
+import { userInfo } from 'os';
+import { ROLE_MAP } from '@model/model/role/role/role.interface';
 
 @Injectable()
 export class OrderService {
@@ -169,5 +173,14 @@ export class OrderService {
       await order.save(options);
     });
     return order;
+  }
+
+  async getOrderAll(userId: number): Promise<Order[]> {
+    const role = await Role.findOne({
+      where: { userId: userId, role: ROLE_MAP.管理员 },
+    });
+
+    if (role) return await Order.findAll({ include: OrderItem });
+    return await Order.findAll({ where: { id: userId }, include: OrderItem });
   }
 }

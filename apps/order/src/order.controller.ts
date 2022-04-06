@@ -4,7 +4,20 @@ import { Order } from '@model/model/order/order/order.model';
 
 @Controller('api/order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) {
+    //
+  }
+
+  @Get('get')
+  async get(@Query() query: any): Promise<Order> {
+    return await this.orderService.getOrder(query);
+  }
+
+  @Get('getAll')
+  async getAll(@Query() query: any, @Req() request: any): Promise<Order[]> {
+    const user = request.user;
+    return await this.orderService.getOrderAll(user.id);
+  }
 
   @Post('create')
   async create(@Body() body: any, @Req() request: any): Promise<Order> {
@@ -12,11 +25,6 @@ export class OrderController {
     return await this.orderService.createOrder(
       Object.assign({}, body, { operId: user.id }),
     );
-  }
-
-  @Get('get')
-  async get(@Query() query: any): Promise<Order> {
-    return await this.orderService.getOrder(query);
   }
 
   @Post('pay')

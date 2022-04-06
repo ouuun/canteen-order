@@ -12,6 +12,7 @@ import { UtilsModule } from '@utils/utils';
 import { BullConnectModule } from '@utils/utils/bull/bullConnect.module';
 import { BullModule } from '@nestjs/bull';
 import { CuisineModule } from '@model/model/cuisine/cuisine.module';
+import { RoleModule } from '@model/model/role/role.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CuisineModule } from '@model/model/cuisine/cuisine.module';
     OrderItemModule,
     CuisineModule,
     BullConnectModule,
+    RoleModule,
     BullModule.registerQueue({
       configKey: 'default',
       name: 'order:paying',
