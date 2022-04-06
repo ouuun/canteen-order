@@ -8,9 +8,10 @@ import { MyAuthGuard } from '@utils/utils/auth/my-auth.guard';
 import { UtilsModule } from '@utils/utils';
 import { AuthModule } from '@utils/utils/auth/auth.module';
 import { OrderModule as OrderModelModule } from '@model/model/order/order.module';
+import { CuisineModule } from '@model/model/cuisine/cuisine.module';
 
 @Module({
-  imports: [AuthModule, UtilsModule, OrderModelModule],
+  imports: [AuthModule, UtilsModule, OrderModelModule, CuisineModule],
   controllers: [OrderController],
   providers: [
     {

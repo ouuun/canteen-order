@@ -6,7 +6,7 @@ export interface DishPrice {
 
 export interface DishTaste {
   name: string;
-  price: string;
+  price: number;
   sale: number;
 }
 
@@ -19,4 +19,11 @@ export enum DishCheck {
   material = '未设置原材料',
   cooking = '未设置烹饪方式',
   weight = '未设置份量',
+}
+
+export interface changeSaleRequest {
+  id: number;
+  price: { name: string; price: number; sale: number };
+  taste: { name: string; price: number; sale: number };
+  quantity: number;
 }

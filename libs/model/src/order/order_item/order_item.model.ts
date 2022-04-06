@@ -5,12 +5,14 @@ import {
   BeforeCreate,
   BeforeDestroy,
   BeforeUpdate,
+  BelongsTo,
   Column,
   DataType,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { LogHelper } from '@model/model/log/log/log-helper';
+import { Order } from '@model/model/order/order/order.model';
 
 @Table({ tableName: 'order_item', timestamps: true })
 export class OrderItem extends Model {
@@ -41,8 +43,8 @@ export class OrderItem extends Model {
   @Column({ type: DataType.JSON })
   remark: any;
 
-  // @HasOne(() => Dish, 'type')
-  // Dishes: Dish[];
+  @BelongsTo(() => Order, 'orderId')
+  Order: Order;
 
   @BeforeUpdate
   @BeforeCreate

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import {
+  changeSaleRequest,
   DishCheck,
   DishPrice,
   DishTaste,
@@ -9,7 +10,7 @@ import {
 import { Dish } from '@model/model/cuisine/dish/dish/dish.model';
 import * as assert from 'assert';
 import { Type } from '@model/model/cuisine/type/type/type.model';
-import { LogHelper } from '@model/model/log/log/log-helper';
+import { LogHelper, LogSaveOptions } from '@model/model/log/log/log-helper';
 import { LOG_ACTION } from '@model/model/log/log/log.interface';
 import { UpdateEntity } from '@model/model/model-utils';
 
@@ -72,6 +73,29 @@ export class DishService {
     let active = false;
     if (query.active === 'true') active = true;
     return await Dish.findAll({ where: { active: active } });
+  }
+
+  public async changeSale(req: changeSaleRequest, options: LogSaveOptions) {
+    const dish = await Dish.findOne({
+      where: { id: req.id },
+      lock: options.transaction.LOCK.UPDATE,
+    });
+
+    const prices = JSON.parse(JSON.stringify(dish.prices));
+    const tastes = JSON.parse(JSON.stringify(dish.tastes));
+
+    prices.forEach((price) => {
+      if (price.name === req.price.name) price.sale += req.quantity;
+    });
+
+    tastes.forEach((taste) => {
+      if (taste.name === req.taste.name) taste.sale += req.quantity;
+    });
+
+    dish.prices = prices;
+    dish.tastes = tastes;
+
+    await dish.save(options);
   }
 }
 

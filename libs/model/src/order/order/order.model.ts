@@ -7,10 +7,12 @@ import {
   BeforeUpdate,
   Column,
   DataType,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { LogHelper } from '@model/model/log/log/log-helper';
+import { OrderItem } from '@model/model/order/order_item/order_item.model';
 
 @Table({ tableName: 'order', timestamps: true })
 export class Order extends Model {
@@ -31,6 +33,9 @@ export class Order extends Model {
 
   @Column({ type: DataType.JSON })
   remark: any;
+
+  @HasMany(() => OrderItem, 'orderId')
+  Items: OrderItem[];
 
   @BeforeUpdate
   @BeforeCreate
