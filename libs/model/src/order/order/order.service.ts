@@ -64,10 +64,9 @@ export class OrderService {
 
     //校验价格
     const price =
-      Number(
-        dish.prices[req.priceIndex].price +
-          (req.tasteIndex > 0 ? dish.tastes[req.tasteIndex].price : 0),
-      ) * req.num;
+      (dish.prices[req.priceIndex].price +
+        (req.tasteIndex >= 0 ? dish.tastes[req.tasteIndex].price : 0)) *
+      req.num;
 
     assert(price === req.price, '价格发生变化,请重新下单');
     return OrderItem.build({
@@ -77,7 +76,7 @@ export class OrderService {
       dishId: dish.id,
       quantity: req.num,
       price: dish.prices[req.priceIndex],
-      taste: req.tasteIndex > 0 ? dish.tastes[req.tasteIndex] : null,
+      taste: req.tasteIndex >= 0 ? dish.tastes[req.tasteIndex] : null,
     });
   }
 

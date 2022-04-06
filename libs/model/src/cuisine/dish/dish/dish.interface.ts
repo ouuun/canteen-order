@@ -1,6 +1,6 @@
 export interface DishPrice {
   name: string;
-  price: string;
+  price: number;
   sale: number;
 }
 

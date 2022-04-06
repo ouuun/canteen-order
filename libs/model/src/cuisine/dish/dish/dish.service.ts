@@ -89,7 +89,7 @@ export class DishService {
     });
 
     tastes.forEach((taste) => {
-      if (taste.name === req.taste.name) taste.sale += req.quantity;
+      if (taste.name === req.taste?.name) taste.sale += req.quantity;
     });
 
     dish.prices = prices;
