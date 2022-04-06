@@ -10,6 +10,7 @@
     "build": "nest build",
     "build:user": "nest build user",
     "build:manager": "nest build manager",
+    "build:order": "nest build order",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
