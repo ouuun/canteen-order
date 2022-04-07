@@ -11,7 +11,10 @@ export class TableController {
 
   @Get('get')
   async get(@Query() query: any, @Req() request: any): Promise<Table> {
-    return await this.tableService.getTable(query);
+    const user = request.user;
+    return await this.tableService.getTable(
+      Object.assign({}, query, { operId: user.id }),
+    );
   }
 
   @Get('getName')
