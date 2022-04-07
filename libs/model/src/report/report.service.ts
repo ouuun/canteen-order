@@ -19,7 +19,7 @@ export class ReportService {
     const start = moment().startOf('day').toDate();
     const end = moment().endOf('day').toDate();
 
-    const order = await Order.findAll({
+    const orders = await Order.findAll({
       where: {
         createdAt: { [Op.between]: [start, end] },
         state: ORDER_STATE.已支付,
@@ -28,6 +28,22 @@ export class ReportService {
       logging: true,
     });
 
-    return order;
+    const dishNum = orders.reduce((prev, curr) => {
+      return (prev += curr.Items.reduce((p, c) => {
+        return (p += c.quantity);
+      }, 0));
+    }, 0);
+
+    const orderNum = orders.length;
+
+    const amount = orders.reduce((prev, curr) => {
+      return (prev += curr.price);
+    }, 0);
+
+    return {
+      dishNum: dishNum,
+      orderNum: orderNum,
+      amount: amount,
+    };
   }
 }
