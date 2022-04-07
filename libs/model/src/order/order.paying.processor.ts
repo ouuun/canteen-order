@@ -17,8 +17,8 @@ export class OrderPayingProcessor {
   async checkPaying(job: Job<{ id: number }>) {
     try {
       const OrderId = job.data.id;
-      await this.orderService.cancelOrder(OrderId);
-      this.logger.debug(`auto cancelled unpaid order ${OrderId}`, 'bull');
+      if (await this.orderService.cancelOrder(OrderId))
+        this.logger.debug(`auto cancelled unpaid order ${OrderId}`, 'bull');
       await job.progress(100);
     } catch (e) {
       this.logger.error(

@@ -9,9 +9,17 @@ import { MyAuthGuard } from '@utils/utils/auth/my-auth.guard';
 import { AuthModule } from '@utils/utils/auth/auth.module';
 import { DishModule } from './dish/dish.module';
 import { TableModule } from './table/table.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
-  imports: [AuthModule, UtilsModule, TypeModule, DishModule, TableModule],
+  imports: [
+    AuthModule,
+    UtilsModule,
+    TypeModule,
+    DishModule,
+    TableModule,
+    ReportModule,
+  ],
   controllers: [],
   providers: [
     {

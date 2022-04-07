@@ -130,12 +130,14 @@ export class OrderService {
     );
   }
 
-  public async cancelOrder(id: number) {
+  public async cancelOrder(id: number): Promise<boolean> {
     const order = await Order.findOne({
       where: { id: id },
       include: OrderItem,
     });
     const user = order.userId;
+
+    if (order.state == ORDER_STATE.已支付) return false;
 
     order.state = ORDER_STATE.已取消;
 
@@ -158,6 +160,7 @@ export class OrderService {
         await order.save(options);
       }
     });
+    return true;
   }
 
   public async getOrder(query: any): Promise<Order> {
