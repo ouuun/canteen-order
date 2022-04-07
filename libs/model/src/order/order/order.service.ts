@@ -62,7 +62,8 @@ export class OrderService {
     order.tableId = req.table;
     order.userId = req.operId;
     order.Items = [];
-    order.remark = req.remark;
+    const remark = req.remark ? JSON.parse(JSON.stringify(req.remark)) : {};
+    order.remark = remark;
 
     return order;
   }
@@ -184,7 +185,15 @@ export class OrderService {
       where: { userId: userId, role: ROLE_MAP.管理员 },
     });
 
-    if (role) return await Order.findAll({ include: OrderItem });
-    return await Order.findAll({ where: { id: userId }, include: OrderItem });
+    if (role)
+      return await Order.findAll({
+        include: OrderItem,
+        order: [['id', 'desc']],
+      });
+    return await Order.findAll({
+      where: { id: userId },
+      include: OrderItem,
+      order: [['id', 'desc']],
+    });
   }
 }
