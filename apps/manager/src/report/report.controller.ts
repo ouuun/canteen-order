@@ -12,8 +12,8 @@ export class ReportController {
     return await this.reportService.toDay();
   }
 
-  @Get('getName')
-  async getName(@Query() query: any, @Req() request: any): Promise<any> {
-    return null;
+  @Get('history')
+  async history(@Query() query: any, @Req() request: any): Promise<any> {
+    return await this.reportService.history();
   }
 }
