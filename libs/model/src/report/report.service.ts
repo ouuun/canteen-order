@@ -54,6 +54,8 @@ export class ReportService {
       days.push([start, end]);
     }
 
+    days.reverse();
+
     const data = [];
     for (const day of days) {
       const orders = await Order.findAll({
