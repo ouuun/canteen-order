@@ -126,7 +126,7 @@ export class OrderService {
   private async addToQueue(id: number): Promise<any> {
     await this.payingQueue.add(
       { id: id },
-      { delay: 1000 * 6, removeOnComplete: true },
+      { delay: 1000 * 60, removeOnComplete: true },
     );
   }
 
