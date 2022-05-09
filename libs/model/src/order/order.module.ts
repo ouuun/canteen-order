@@ -13,6 +13,7 @@ import { BullConnectModule } from '@utils/utils/bull/bullConnect.module';
 import { BullModule } from '@nestjs/bull';
 import { CuisineModule } from '@model/model/cuisine/cuisine.module';
 import { RoleModule } from '@model/model/role/role.module';
+import { WechatModule } from '@utils/utils/wechat/wechat.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { RoleModule } from '@model/model/role/role.module';
     OrderItemModule,
     CuisineModule,
     BullConnectModule,
+    WechatModule,
     RoleModule,
     BullModule.registerQueue({
       configKey: 'default',

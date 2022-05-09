@@ -15,6 +15,7 @@ docker run -d -it \
 -v /root/var/projects/:/var/projects \
 -v /root/var/config:/var/config \
 -v /root/var/logs:/var/logs \
+-v /root/var/images:/var/images \
 --name $app \
 node:10.16.3-alpine \
 ash -c "npm config set unsafe-perm true && \
@@ -22,6 +23,7 @@ npm install --registry=https://registry.npm.taobao.org && \
 npm install @nestjs/cli -g --registry=https://registry.npm.taobao.org  &&\
 npm install pm2 -g --registry=https://registry.npm.taobao.org &&\
 npm run build:$app &&\
-NODE_ENV=prod pm2-runtime start dist/apps/$app/apps/$app/src/main.js  --name $app >> /var/logs/canteen-order.manager.$app.log 2>&1"
+NODE_ENV=prod pm2-runtime start dist/apps/$app/apps/$app/src/main.js  --name $app >> /var/logs/$app.log 2>&1"
 
 docker ps -a
+

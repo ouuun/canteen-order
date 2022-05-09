@@ -5,6 +5,7 @@ import {
   BeforeCreate,
   BeforeDestroy,
   BeforeUpdate,
+  BelongsTo,
   Column,
   DataType,
   HasMany,
@@ -13,6 +14,7 @@ import {
 } from 'sequelize-typescript';
 import { LogHelper } from '@model/model/log/log/log-helper';
 import { OrderItem } from '@model/model/order/order_item/order_item.model';
+import { User } from '@model/model/user/user/user.model';
 
 @Table({ tableName: 'order', timestamps: true })
 export class Order extends Model {
@@ -36,6 +38,9 @@ export class Order extends Model {
 
   @HasMany(() => OrderItem, 'orderId')
   Items: OrderItem[];
+
+  @BelongsTo(() => User, 'userId')
+  User: User;
 
   @BeforeUpdate
   @BeforeCreate

@@ -12,7 +12,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { LogHelper } from '@model/model/log/log/log-helper';
-import { Order } from '@model/model/order/order/order.model';
+import { User } from '@model/model/user/user/user.model';
 
 @Table({ tableName: 'role', timestamps: true })
 export class Role extends Model {
@@ -21,6 +21,9 @@ export class Role extends Model {
 
   @Column({ type: DataType.INTEGER })
   role: number;
+
+  @BelongsTo(() => User, 'userId')
+  User: User;
 
   @BeforeUpdate
   @BeforeCreate

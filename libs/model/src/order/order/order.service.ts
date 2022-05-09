@@ -19,8 +19,12 @@ import { LOG_ACTION } from '@model/model/log/log/log.interface';
 import { DishService } from '@model/model/cuisine/dish/dish/dish.service';
 import { User } from '@model/model/user/user/user.model';
 import { Role } from '@model/model/role/role/role.model';
-import { userInfo } from 'os';
 import { ROLE_MAP } from '@model/model/role/role/role.interface';
+import { WechatService } from '@utils/utils/wechat/wechat.service';
+import {
+  MESSAGE_TEMPLATE,
+  OrderTemplateData,
+} from '@utils/utils/wechat/wechat.interface';
 
 @Injectable()
 export class OrderService {
@@ -28,6 +32,7 @@ export class OrderService {
     @InjectConnection('connection') private readonly sequelize: Sequelize,
     @InjectQueue('order:paying') private readonly payingQueue: Queue,
     private readonly dishService: DishService,
+    private readonly wechatService: WechatService,
   ) {}
 
   public async createOrder(req: OrderCreateRequest): Promise<Order> {
@@ -168,7 +173,10 @@ export class OrderService {
   }
 
   public async payOrder(req: any): Promise<Order> {
-    const order = await Order.findOne({ where: { id: req.id } });
+    const order = await Order.findOne({
+      where: { id: req.id },
+      include: [User, OrderItem],
+    });
 
     assert(order.state == ORDER_STATE.未支付, `该订单 ${order.state}`);
 
@@ -180,6 +188,30 @@ export class OrderService {
       order.state = ORDER_STATE.已支付;
       await order.save(options);
     });
+    const role = await Role.findOne({
+      where: { role: ROLE_MAP.管理员 },
+      include: User,
+    });
+    const openid = role.User.openid;
+    const data: OrderTemplateData = {
+      thing9: { value: order.User.name },
+      character_string1: { value: order.out_trade_no },
+      amount4: { value: String(order.price) },
+      thing5: {
+        value: order.Items.map((i) => {
+          return i.name;
+        }).join(','),
+      },
+      thing8: { value: order.remark.remark || '无' },
+    };
+
+    await this.wechatService.sendMessage(
+      openid,
+      MESSAGE_TEMPLATE.订单,
+      '',
+      data,
+    );
+
     return order;
   }
 

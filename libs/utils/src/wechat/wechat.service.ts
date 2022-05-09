@@ -2,9 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom, map } from 'rxjs';
 import {
+  MESSAGE_TEMPLATE,
+  OrderTemplateData,
   WECHAT_API_AUTH_CODE2SESSION,
   WECHAT_API_GET_ACCESSTOKEN,
   WECHAT_API_GET_WXCODE,
+  WECHAT_API_SENDSUBSCRIBEMESSAGE,
   WECHAT_APPID,
   WECHAT_SECRET,
 } from '@utils/utils/wechat/wechat.interface';
@@ -82,5 +85,31 @@ export class WechatService {
     );
 
     return res;
+  }
+
+  public async sendMessage(
+    touser: string,
+    template_id: MESSAGE_TEMPLATE,
+    page: string,
+    info: OrderTemplateData,
+  ): Promise<any> {
+    const accessToken = await this.getAccessToken();
+    const url =
+      WECHAT_API_SENDSUBSCRIBEMESSAGE + `?access_token=${accessToken}`;
+
+    const data: any = {
+      touser: touser,
+      template_id: template_id,
+      page: page,
+      miniprogram_state: 'developer',
+      lang: 'zh_CN',
+      data: info,
+    };
+
+    const res = await firstValueFrom(
+      this.httpService.post(url, data).pipe(map((response) => response.data)),
+    );
+
+    console.log(res);
   }
 }
