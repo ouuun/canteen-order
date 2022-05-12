@@ -15,6 +15,7 @@ import {
 import { LogHelper } from '@model/model/log/log/log-helper';
 import { OrderItem } from '@model/model/order/order_item/order_item.model';
 import { User } from '@model/model/user/user/user.model';
+import { Table as table } from '@model/model/table/table/table.model';
 
 @Table({ tableName: 'order', timestamps: true })
 export class Order extends Model {
@@ -41,6 +42,9 @@ export class Order extends Model {
 
   @BelongsTo(() => User, 'userId')
   User: User;
+
+  @BelongsTo(() => table, 'tableId')
+  Table: table;
 
   @BeforeUpdate
   @BeforeCreate

@@ -14,6 +14,7 @@ import { BullModule } from '@nestjs/bull';
 import { CuisineModule } from '@model/model/cuisine/cuisine.module';
 import { RoleModule } from '@model/model/role/role.module';
 import { WechatModule } from '@utils/utils/wechat/wechat.module';
+import { Table } from '@model/model/table/table/table.model';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { WechatModule } from '@utils/utils/wechat/wechat.module';
       name: 'order:paying',
     }),
     mySequelizeModule,
-    SequelizeModule.forFeature([Order, OrderItem], 'connection'),
+    SequelizeModule.forFeature([Order, OrderItem, Table], 'connection'),
   ],
   providers: [OrderService, OrderItemService, OrderPayingProcessor],
   exports: [OrderService, OrderItemService],

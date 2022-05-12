@@ -25,6 +25,7 @@ import {
   MESSAGE_TEMPLATE,
   OrderTemplateData,
 } from '@utils/utils/wechat/wechat.interface';
+import { Table } from '@model/model/table/table/table.model';
 
 @Injectable()
 export class OrderService {
@@ -222,12 +223,12 @@ export class OrderService {
 
     if (role)
       return await Order.findAll({
-        include: OrderItem,
+        include: [OrderItem, Table],
         order: [['id', 'desc']],
       });
     return await Order.findAll({
       where: { id: userId },
-      include: OrderItem,
+      include: [OrderItem, Table],
       order: [['id', 'desc']],
     });
   }
