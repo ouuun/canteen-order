@@ -170,7 +170,10 @@ export class OrderService {
   }
 
   public async getOrder(query: any): Promise<Order> {
-    return await Order.findOne({ where: { id: query.id }, include: OrderItem });
+    return await Order.findOne({
+      where: { id: query.id },
+      include: [OrderItem, Table],
+    });
   }
 
   public async payOrder(req: any): Promise<Order> {
