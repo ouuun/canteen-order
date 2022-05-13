@@ -79,8 +79,8 @@ export class OrderService {
 
     //校验价格
     const price =
-      (dish.prices[req.priceIndex].price +
-        (req.tasteIndex >= 0 ? dish.tastes[req.tasteIndex].price : 0)) *
+      (Number(dish.prices[req.priceIndex].price) +
+        (req.tasteIndex >= 0 ? Number(dish.tastes[req.tasteIndex].price) : 0)) *
       req.num;
 
     console.log(req.id);
