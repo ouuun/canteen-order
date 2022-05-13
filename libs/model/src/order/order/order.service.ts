@@ -83,7 +83,15 @@ export class OrderService {
         (req.tasteIndex >= 0 ? dish.tastes[req.tasteIndex].price : 0)) *
       req.num;
 
-    assert(price === req.price, '价格发生变化,请重新下单');
+    console.log(req.id);
+    console.log(dish.prices[req.priceIndex]);
+    console.log(dish.tastes[req.tasteIndex].price);
+    console.log(req);
+
+    assert(
+      price === req.price,
+      `价格发生变化,请重新下单 ${req.price}  ${price}`,
+    );
     return OrderItem.build({
       name: dish.name,
       amount: price,
