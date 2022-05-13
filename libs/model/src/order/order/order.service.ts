@@ -83,9 +83,6 @@ export class OrderService {
         (req.tasteIndex >= 0 ? Number(dish.tastes[req.tasteIndex].price) : 0)) *
       req.num;
 
-    console.log(req.id);
-    console.log(dish.prices[req.priceIndex]);
-    console.log(dish.tastes[req.tasteIndex].price);
     console.log(req);
 
     assert(
